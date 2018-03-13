@@ -20,15 +20,15 @@ module.exports = ({iconPath, searchPath, platforms}) => {
         }
 
         //  Check that we have a source icon.
-        return fileExists(icon);
+        return fileExists(iconPath);
       })
       .then((exists) => {
         if (!exists) {
-          console.error(`Source file '${icon}' does not exist. Add the file or specify source icon with the '--icon' parameter.`);
+          console.error(`Source file '${iconPath}' does not exist.`);
           return reject('Icon source file does not exist');
         }
         //  Generate some icons.
-        return generate({ sourceIcon: icon, search, platforms });
+        return generate({ sourceIcon: iconPath, searchPath, platforms });
       })
       .then(() => {
         resolve();
