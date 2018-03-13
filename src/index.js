@@ -28,7 +28,11 @@ module.exports = ({iconPath, searchPath, platforms}) => {
           return reject('Icon source file does not exist');
         }
         //  Generate some icons.
-        return generate({ sourceIcon: iconPath, searchPath, platforms });
+        return generate({ 
+          sourceIcon: iconPath, 
+          searchRoot: searchPath, 
+          platforms: platforms
+        });
       })
       .then(() => {
         resolve();
