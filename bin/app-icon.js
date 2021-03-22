@@ -21,9 +21,13 @@ program
   .command('generate')
   .description('Generate all app icons from a single input icon')
   .option('-i, --icon [icon]', "The icon to use. Defaults to 'icon.png'", 'icon.png')
+  .option('--topShelfImage [icon]', 'image only for tvos')
+  .option('--topShelfWideImage [icon]', 'image only for tvos')
   .option('-s, --search [optional]', "The folder to search from. Defaults to './'", './')
   .option('-p, --platforms [optional]', "The platforms to generate icons for. Defaults to 'android,ios'", 'android,ios')
-  .action(({ icon, search, platforms }) => {
+  .action(({
+    icon, search, platforms, topShelfImage, topShelfWideImage,
+  }) => {
     isImagemagickInstalled()
       .catch((err) => { throw err; })
       .then((imageMagickInstalled) => {
@@ -41,8 +45,14 @@ program
           console.error(`Source file '${icon}' does not exist. Add the file or specify source icon with the '--icon' parameter.`);
           return process.exit(1);
         }
+        const parameters = { sourceIcon: icon, search, platforms };
+
+        if (topShelfImage) { parameters.topShelfImage = topShelfImage; }
+
+        if (topShelfWideImage) { parameters.topShelfWideImage = topShelfWideImage; }
+
         //  Generate some icons.
-        return generate({ sourceIcon: icon, search, platforms });
+        return generate(parameters);
       })
       .catch((generateErr) => {
         console.error(chalk.red(`An error occurred generating the icons: ${generateErr.message}`));

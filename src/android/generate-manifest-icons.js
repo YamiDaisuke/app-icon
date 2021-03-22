@@ -24,7 +24,7 @@ module.exports = function generateManifestIcons(sourceIcon, manifest) {
       mkdirp(path.dirname(targetPath), (err) => {
         if (err) return reject(err);
         results.icons.push(icon.path);
-        return resolve(resizeImage(sourceIcon, targetPath, icon.size));
+        return resolve(resizeImage(sourceIcon.icon, targetPath, icon.size));
       });
     });
   })).then(() => results);
