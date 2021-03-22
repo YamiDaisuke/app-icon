@@ -8,7 +8,7 @@ module.exports = function validateParameters(parameters) {
   if (parameters.topShelfWideImage) { sourceIcon.topShelfWideImage = parameters.topShelfWideImage; }
 
   //  Validate or assign the search path.
-  const searchRoot = parameters.search || './';
+  const searchRoot = parameters.searchPath || './';
 
   //  Validate or assign the platforms.
   const platformsString = parameters.platforms || 'android,ios,tvos';
