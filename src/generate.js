@@ -1,6 +1,8 @@
 const chalk = require('chalk');
-const findIconsetFolders = require('./ios/find-iconset-folders');
-const generateIconsetIcons = require('./ios/generate-iconset-icons');
+const findIconsetFoldersIOS = require('./ios/find-iconset-folders');
+const generateIconsIOS = require('./ios/generate-iconset-icons');
+const findBrandassetsFoldersTvos = require('./tvos/find-brandassets-folders');
+const generateBrandassetsIconsTvos = require('./tvos/generate-brandassets-icons');
 const findAndroidManifests = require('./android/find-android-manifests');
 const generateManifestIcons = require('./android/generate-manifest-icons');
 const validateParameters = require('./validate-parameters');
@@ -12,13 +14,28 @@ module.exports = function generate(parameters) {
   //  Set up the results object.
   const results = { iconsets: [], manifests: [] };
 
-  return findIconsetFolders(searchRoot)
+  return findIconsetFoldersIOS(searchRoot)
     .then(iconSets => Promise.all(iconSets.map((iconset) => {
       if (!platforms.includes('ios')) return null;
 
       console.log(`Found iOS iconset: ${iconset}...`);
 
-      return generateIconsetIcons(sourceIcon, iconset)
+      return generateIconsIOS(sourceIcon, iconset)
+        .then(({ icons }) => {
+          results.iconsets.push({ iconset, icons });
+          icons.forEach((icon) => {
+            console.log(`    ${chalk.green('✓')}  Generated ${icon}`);
+          });
+          console.log(`    ${chalk.green('✓')}  Updated Contents.json`);
+        });
+    })))
+    .then(() => findBrandassetsFoldersTvos(searchRoot))
+    .then(iconSets => Promise.all(iconSets.map((iconset) => {
+      if (!platforms.includes('tvos')) return null;
+
+      console.log(`Found tvos brandassets: ${iconset}...`);
+
+      return generateBrandassetsIconsTvos(sourceIcon, iconset)
         .then(({ icons }) => {
           results.iconsets.push({ iconset, icons });
           icons.forEach((icon) => {
