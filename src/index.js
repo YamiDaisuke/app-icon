@@ -5,7 +5,7 @@ const generate = require('../src/generate');
 const labelImage = require('../src/label/label-image');
 const fileExists = require('../src/utils/file-exists');
 
-module.exports = ({ iconPath, searchPath, platforms }) => {
+module.exports = (parameters) => {
   return new Promise((resolve, reject) => {
     isImagemagickInstalled()
       .catch((err) => { throw err; })
@@ -17,7 +17,7 @@ module.exports = ({ iconPath, searchPath, platforms }) => {
         }
 
         //  Check that we have a source icon.
-        return fileExists(iconPath);
+        return fileExists(parameters.iconPath);
       })
       .then((exists) => {
         if (!exists) {
@@ -25,11 +25,7 @@ module.exports = ({ iconPath, searchPath, platforms }) => {
           return reject(new Error('Icon source file does not exist'));
         }
         //  Generate some icons.
-        return generate({
-          sourceIcon: iconPath,
-          searchRoot: searchPath,
-          platforms,
-        });
+        return generate(parameters);
       })
       .then(() => {
         resolve();

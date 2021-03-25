@@ -1,7 +1,7 @@
 module.exports = function validateParameters(parameters) {
   //  Validate or assign the source icon.
   const sourceIcon = {
-    icon: parameters.sourceIcon || 'icon.png',
+    icon: parameters.iconPath || 'icon.png',
   };
 
   if (parameters.topShelfImage) { sourceIcon.topShelfImage = parameters.topShelfImage; }

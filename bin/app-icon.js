@@ -45,7 +45,7 @@ program
           console.error(`Source file '${icon}' does not exist. Add the file or specify source icon with the '--icon' parameter.`);
           return process.exit(1);
         }
-        const parameters = { sourceIcon: icon, search, platforms };
+        const parameters = { iconPath: icon, searchRoot: search, platforms };
 
         if (topShelfImage) { parameters.topShelfImage = topShelfImage; }
 
